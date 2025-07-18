@@ -1,7 +1,19 @@
-import React, { useState } from 'react';
-import { Menu, X, Home, Route as About, Contact, Dices as Services } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Menu,
+  X,
+  Home,
+  Route as About,
+  Contact,
+  Dices as Services,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
+  const { user } = useAuth();
+  console.log(user);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -25,7 +37,7 @@ const Header = () => {
           <nav className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               <a
-                href="#home"
+                href="/"
                 className="flex items-center space-x-2 text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 <Home size={16} />
@@ -39,11 +51,11 @@ const Header = () => {
                 <span>About</span>
               </a>
               <a
-                href="#services"
+                href="/projects"
                 className="flex items-center space-x-2 text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 <Services size={16} />
-                <span>Services</span>
+                <span>Projects</span>
               </a>
               <a
                 href="#contact"
@@ -52,6 +64,31 @@ const Header = () => {
                 <Contact size={16} />
                 <span>Contact</span>
               </a>
+              <div>
+                {!user ? (
+                  <>
+                    <Link
+                      to="/auth"
+                      className="px-4 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/auth?mode=signup"
+                      className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-dark transition-colors"
+                    >
+                      Sign Up
+                    </Link>
+                  </>
+                ) : (
+                  <Link
+                    to="/workspace"
+                    className="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-dark transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                )}
+              </div>
             </div>
           </nav>
 

@@ -1,3 +1,140 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 252 100% 99%;
+    --foreground: 270 5% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 270 5% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 270 5% 10%;
+
+    --primary: 260 84% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 214 100% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+
+    --accent: 183 95% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 5% 92%;
+    --input: 240 5% 90%;
+    --ring: 260 84% 60%;
+
+    --radius: 0.75rem;
+  }
+ 
+  .dark {
+    --background: 270 5% 10%;
+    --foreground: 0 0% 98%;
+
+    --card: 270 5% 13%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 270 5% 13%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 260 84% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 214 100% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 270 5% 18%;
+    --muted-foreground: 240 5% 70%;
+
+    --accent: 183 95% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 270 5% 24%;
+    --input: 270 5% 24%;
+    --ring: 260 84% 60%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  .glass-card {
+    @apply bg-white/30 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg;
+  }
+}
+
+.animate-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: reveal 0.6s ease forwards;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-delay-1 {
+  animation-delay: 0.2s;
+}
+
+.animate-delay-2 {
+  animation-delay: 0.4s;
+}
+
+.animate-delay-3 {
+  animation-delay: 0.6s;
+}
+
+.animate-delay-4 {
+  animation-delay: 0.8s;
+}
+
+/* Add new animations for the password page */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.animate-shake {
+  animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}

@@ -17,6 +17,7 @@ import { useCreateProjectMutation } from "../useCreateProjectQuery";
 import { toast } from "sonner";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangle } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const DATA_SOURCES = [
   { id: "pubmed", title: "PubMed", icon: BookOpen },
@@ -28,12 +29,12 @@ const DATA_SOURCES = [
 ];
 
 const CreateProjectForm: React.FC = () => {
+  const { user } = useAuth();
   // Use zustand store for all state
   const {
     step,
     setStep,
-    selectedSourceIds,
-    setSelectedSourceIds,
+
     projectName,
     projectDescription,
     visibility,
@@ -59,7 +60,7 @@ const CreateProjectForm: React.FC = () => {
 
   const canGoNext =
     step === 1
-      ? selectedSourceIds.length > 0 || uploadedFiles.length > 0
+      ? uploadedFiles.length > 0
       : step === 2
       ? projectName.trim().length > 0
       : false;
@@ -90,14 +91,13 @@ const CreateProjectForm: React.FC = () => {
       return () => clearInterval(interval);
     } else if (step === 3 && timer === 0) {
       reset();
-      navigate("/dashboard"); // Change to your dashboard route
+      navigate("/projects"); // Change to your dashboard route
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, timer, navigate]);
 
   const handleCreateProject = () => {
     if (!isFormValid) return;
-
     const organizedSources = {
       pubmed: [],
       clinical_trials: [],
@@ -105,13 +105,6 @@ const CreateProjectForm: React.FC = () => {
       uniprot: [],
       openalex: [],
     };
-
-    for (const file of selectedSourceIds) {
-      const source = file.source;
-      if (organizedSources[source]) {
-        organizedSources[source].push(file.id);
-      }
-    }
 
     const organizedFiles = {
       pubmed: [],
@@ -128,13 +121,15 @@ const CreateProjectForm: React.FC = () => {
         organizedFiles[source].push(file);
       }
     }
+    console.log(organizedFiles);
 
     const payload = {
       name: projectName,
       description: projectDescription,
       visibility: visibility,
       ...(visibility === "team" && { team_id: selectedTeam }),
-      sources: organizedSources,
+      user_id: user?.id,
+
       files: organizedFiles,
     };
 
@@ -229,11 +224,7 @@ const CreateProjectForm: React.FC = () => {
         <form className="space-y-10 w-full">
           {step === 1 && (
             <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-8 border border-gray-100 w-full">
-              <DataSourceSelector
-                selectedSourceIds={selectedSourceIds}
-                onChange={setSelectedSourceIds}
-                DATA_SOURCES={DATA_SOURCES}
-              />
+              <DataSourceSelector DATA_SOURCES={DATA_SOURCES} />
               <div className="flex flex-col sm:flex-row justify-end items-center gap-2 sm:gap-4 mt-4 w-full">
                 {hasUnuploadedLocalFiles && (
                   <Alert className="w-full mb-2 flex flex-col md:flex-row items-start md:items-center gap-2 bg-yellow-50 border-yellow-400">
@@ -307,7 +298,7 @@ const CreateProjectForm: React.FC = () => {
                 className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700"
                 onClick={() => {
                   reset();
-                  navigate("/dashboard");
+                  navigate("/projects");
                 }}
                 type="button"
               >

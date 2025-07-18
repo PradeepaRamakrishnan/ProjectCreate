@@ -3,10 +3,11 @@
 import React, { useRef, useState } from "react";
 import { FileText, Loader2, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
+// import { useAuth } from "@/contexts/AuthContext";
 import { useCreateProjectStore } from "../zustand/create-project-store";
 import { useUploadFilesMutation } from "../useCreateProjectQuery";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface CreateProjectLocalFileUploadProps {
   projectId?: string | null;

@@ -7,8 +7,6 @@ export const useCreateProjectStore = create<CreateProjectState>()(
     name: 'create-project',
     partialize: (state) => ({
       step: state.step,
-      selectedSourceNames: state.selectedSourceNames,
-      selectedSourceIds: state.selectedSourceIds,
       projectName: state.projectName,
       projectDescription: state.projectDescription,
       visibility: state.visibility,
